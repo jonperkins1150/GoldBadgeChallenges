@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Challenge_02
 {
-    class ClaimsRepository
+    class ClaimRepository
     {
-
-        public Queue<Claim> _claimQueue = new Queue<Claim>();
-        Queue<Claim> = _claimQueue;
+        private Queue<Claim> _claimQueue = new Queue<Claim>();
 
         public int claimCount = 0;
 
@@ -35,11 +33,5 @@ namespace Challenge_02
         {
             claimCount--;
         }
-
-        internal void SeedMenu()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
-
