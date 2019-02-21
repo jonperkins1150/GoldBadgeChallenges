@@ -9,13 +9,12 @@ namespace Challenge_02
     class ProgramUI
     {
         private ClaimRepository _claimRepo = new ClaimRepository();
-
+        int _response;
         private static DateTime CreateDate(string prompt)
         {
             Console.WriteLine($"{prompt} (MM/DD/YYYY)");
             string newDateString = Console.ReadLine();
             DateTime newDate = DateTime.Parse(newDateString);
-
             return newDate;
         }
 
@@ -24,16 +23,15 @@ namespace Challenge_02
             StartMenu();
         }
 
-        private void StartMenu()
+        public void StartMenu()
         {
-            bool continueToRunMenu = true;
+            
 
-            while (continueToRunMenu)
+            while (_response != 4)
             {
                 PrintMenu();
-                int choice = GetAndParseInput(null);
-
-                switch (choice)
+                
+                switch (_response)
                 {
                     case 1:
                         ShowAllClaims();
@@ -45,41 +43,28 @@ namespace Challenge_02
                         AddClaim();
                         break;
                     case 4:
-                        continueToRunMenu = false;
+                        Console.WriteLine("\n Have a Nice Day!");
                         break;
                     default:
-                        PrintMenu();
+                        Console.WriteLine("Please enter a valid number");
                         break;
                 }
+                Console.WriteLine(" \n Press any key to continue....");
+                Console.ReadKey();
+                Console.Clear();
             }
         }
 
-        private void PrintMenu()
+        public void PrintMenu()
         {
             Console.Clear();
             Console.WriteLine($"Which action would you like to take?\n" +
-                    $"1. View all claims\n" +
-                    $"2. Process next claim\n" +
-                    $"3. Enter new claim\n" +
-                    $"4. Exit.");
-        }
-
-        private int GetAndParseInput(string textInput)
-        {
-            int choice = 0;
-            Console.WriteLine(textInput);
-
-            bool valid = false;
-            while (!valid)
-            {
-                string choiceAsString = Console.ReadLine();
-                if (Int32.TryParse(choiceAsString, out choice))
-                    valid = true;
-                else
-                    Console.WriteLine("Invalid input, please enter a number.");
-            }
-
-            return choice;
+                    "1. View all claims\n" +
+                    "2. Process next claim\n" +
+                    "3. Enter new claim\n" +
+                    "4. Exit.");
+            string responseStr = Console.ReadLine();
+            _response = int.Parse(responseStr);
         }
 
         private void ShowAllClaims()
@@ -87,12 +72,12 @@ namespace Challenge_02
             Queue<Claim> claimQueue = _claimRepo.GetClaims();
             Console.Clear();
 
-            Console.WriteLine("{0,-10} {1,-12} {2,-8} {3,-18} {4,-15} {5,-10} {6}", "Claim ID", "Claim Type", "Amount", "Date Of Accident", "Date Of Claim", "Is Valid", "Description");
+            Console.WriteLine("Claim ID  Claim Type\t Amount\t Date Of Incident\tDate Of Claim\t Is Valid\t Description\n");
 
             foreach (Claim claim in claimQueue)
             {
 
-                Console.WriteLine(" {0,-10} {1,-12} ${2,-8} {3,-18} {4,-15} {5,-10} {6}", claim.ClaimID, claim.ClaimType, claim.ClaimAmount, claim.DateOfIncident.ToShortDateString(), claim.DateOfClaim.ToShortDateString(), claim.IsValid, claim.Description);
+                Console.WriteLine($"{ claim.ClaimID}\t\t{ claim.ClaimType}\t ${claim.ClaimAmount} \t{claim.DateOfIncident.ToShortDateString()}        {claim.DateOfClaim.ToShortDateString()} \t{claim.IsValid}\t\t{claim.ClaimDescription}");
             }
             Console.ReadLine();
         }
@@ -104,38 +89,33 @@ namespace Challenge_02
             Console.Clear();
             if (claimQueue.Count != 0)
             {
-                Claim topItem = claimQueue.Peek();
-                Console.WriteLine($"Here are the details for the next claim to be handled:\n" +
-                    $"  ClaimID: {topItem.ClaimID}\n" +
-                    $"  Type: {topItem.ClaimType}\n" +
-                    $"  Description: {topItem.Description}\n" +
-                    $"  Amount: {topItem.ClaimAmount}\n" +
-                    $"  DateOfIncident: {topItem.DateOfIncident.ToShortDateString()}\n" +
-                    $"  DateOfClaim: {topItem.DateOfClaim.ToShortDateString()}\n" +
-                    $"  IsValid: {topItem.IsValid}");
+                Claim firstClaim = claimQueue.Peek();
+                Console.WriteLine("Below are the details for the next claim to be Processed\n\n");
+                Console.WriteLine("Claim ID  Claim Type\t Amount\t Date Of Incident\tDate Of Claim\t Is Valid\t Description\n");
+                Console.WriteLine($"{ firstClaim.ClaimID}\t\t{ firstClaim.ClaimType}\t ${firstClaim.ClaimAmount} \t{firstClaim.DateOfIncident.ToShortDateString()}        {firstClaim.DateOfClaim.ToShortDateString()} \t{firstClaim.IsValid}\t\t{firstClaim.ClaimDescription}");
 
                 while (true)
                 {
-                    Console.Write("Do you want to deal with this claim now? (y/n): ");
-                    string delClaim = Console.ReadLine();
-                    if (delClaim == "y")
+                    Console.Write("Do you want to process this claim now? (y/n): ");
+                    string processClaim = Console.ReadLine();
+                    if (processClaim == "y")
                     {
                         claimQueue.Dequeue();
                         foreach (Claim claim in claimQueue)
                         {
-                            claim.ClaimID--;
+                            claim.ClaimID = claim.ClaimID -1;
                         }
                         _claimRepo.CountDown();
-                        Console.WriteLine("Claim processed.");
+                        Console.WriteLine("Claim has been processed.");
                         break;
                     }
-                    else if (delClaim != "n")
+                    else if (processClaim != "n")
                     {
-                        Console.WriteLine("Invalid input");
+                        Console.WriteLine("Please make a valid Selection");
                     }
                     else
                     {
-                        Console.WriteLine("Claim not processed.");
+                        Console.WriteLine("Claim has not been processed.");
                         break;
                     }
                 }
@@ -149,49 +129,46 @@ namespace Challenge_02
 
         private void AddClaim()
         {
-            ClaimType type = ClaimType.Car;
-            string outPut = null;
+            ClaimType claimType = ClaimType.Car;
+            string clmType = null;
             while (true)
             {
                 Console.Clear();
-                Console.Write($"{outPut}" +
+                Console.Write($"{clmType}" +
                     $"Enter the type of claim being made." +
                     $"\n1. Car \n2. Home \n3. Theft \n   ");
 
                 string inType = Console.ReadLine();
                 if (inType == "1")
                 {
-                    type = ClaimType.Car;
+                    claimType = ClaimType.Car;
                     break;
                 }
                 else if (inType == "2")
                 {
-                    type = ClaimType.Home;
+                    claimType = ClaimType.Home;
                     break;
                 }
                 else if (inType == "3")
                 {
-                    type = ClaimType.Theft;
+                    claimType = ClaimType.Theft;
                     break;
                 }
                 else
                 {
-                    outPut = "Invalid Input, please try again.\n";
+                    clmType = "Invalid Selection, please try again.\n";
                 }
             }
 
             Console.Clear();
             Console.Write("Enter the claim amount: $");
-            string claimAmountAsString = Console.ReadLine();
-            decimal amount = Decimal.Parse(claimAmountAsString);
-
-            Console.Write("\nEnter a brief description for the claim: ");
-            string desc = Console.ReadLine();
-
-            DateTime claimDate = CreateDate("\nEnter the Month, Day, and Year of the claim.");
+            string claimAmtAsStr = Console.ReadLine();
+            decimal claimAmount = Convert.ToDecimal(claimAmtAsStr);
+            Console.Write("\nEnter a description for the claim: ");
+            string claimDescription = Console.ReadLine();
             DateTime incidentDate = CreateDate("\nEnter the Month, Day, and Year of the incident.");
-
-            _claimRepo.AddClaim(type, desc, amount, incidentDate, claimDate);
+            DateTime claimDate = CreateDate("\nEnter the Month, Day, and Year of the claim.");
+            _claimRepo.AddClaim(claimType, claimDescription, claimAmount, incidentDate, claimDate);
         }
     }
 }

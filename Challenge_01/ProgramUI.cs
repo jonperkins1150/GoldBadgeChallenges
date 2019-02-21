@@ -10,7 +10,7 @@ namespace Challenge_01
     {
         MenuRepository _menuRepo = new MenuRepository();
         int _response;
-        //List<Menu> _menuList;
+       
 
         internal void Run()
         {
@@ -93,7 +93,7 @@ namespace Challenge_01
             Console.WriteLine("What would you like to do? \n\t" +
                 "1. See All Menu Items\n\t" +
                 "2. Add Item to the Menu\n\t" +
-                "3. Remove Item from the Menue\n\t" +
+                "3. Remove Item from the Menu\n\t" +
                 "4. Exit");
             string responseStr = Console.ReadLine();
             _response = int.Parse(responseStr);

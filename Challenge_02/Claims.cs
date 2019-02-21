@@ -13,20 +13,20 @@ namespace Challenge_02
 
     public class Claim
     {
-        public Claim(int id, ClaimType type, string desc, decimal amount, DateTime incidentDate, DateTime claimDate, bool valid)
+        public Claim(int claimId, ClaimType claimType, string claimDescription, decimal claimAmount, DateTime incidentDate, DateTime claimDate, bool isValid)
         {
-            ClaimID = id;
-            ClaimType = type;
-            Description = desc;
-            ClaimAmount = amount;
+            ClaimID = claimId;
+            ClaimType = claimType;
+            ClaimDescription = claimDescription;
+            ClaimAmount = claimAmount;
             DateOfIncident = incidentDate;
             DateOfClaim = claimDate;
-            IsValid = valid;
+            IsValid = isValid;
         }
 
         public int ClaimID { get; set; }
         public ClaimType ClaimType { get; set; }
-        public string Description { get; set; }
+        public string ClaimDescription { get; set; }
         public decimal ClaimAmount { get; set; }
         public DateTime DateOfIncident { get; set; }
         public DateTime DateOfClaim { get; set; }
