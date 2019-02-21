@@ -14,6 +14,9 @@ namespace Challenge_05
     {
         private string extraTab;
 
+        public Customer()
+        { }
+
         public Customer(int id, string first, string last, int typeNum)
         {
             UserID = id;
@@ -33,7 +36,6 @@ namespace Challenge_05
                     break;
             }
         }
-
         public int UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

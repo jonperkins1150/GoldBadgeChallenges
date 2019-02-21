@@ -17,7 +17,7 @@ namespace Challenge_01_Tests
             //Arrange
             Menu menuItem = new Menu();
             _menuRepoTest.AddNewItem(menuItem);
-            List<Menu> menuList = _menuRepoTest.GetMenu();       
+            List<Menu> menuList = _menuRepoTest.GetMenu();
 
             //Act           
             var actual = menuList.Count;

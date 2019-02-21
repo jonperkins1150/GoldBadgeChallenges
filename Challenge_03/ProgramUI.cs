@@ -5,7 +5,6 @@ namespace Challenge_03
     class ProgramUI
     {
         public OutingRepository _outingRepo = new OutingRepository();
-
         public static DateTime CreateDate(string prompt)
         {
             Console.WriteLine(prompt);
@@ -32,7 +31,6 @@ namespace Challenge_03
             {
                 PrintMenu();
                 int choice = GetAndParseInput(null);
-
                 switch (choice)
                 {
                     case 1:
@@ -77,11 +75,9 @@ namespace Challenge_03
             }
             return choice;
         }
-
         public void ShowAllOutings()
         {
             var outingList = _outingRepo.GetList();
-
             Console.Clear();
             if (outingList.Count == 0)
             {
@@ -111,19 +107,19 @@ namespace Challenge_03
             {
                 case 1:
                     newEvent = EventType.AmusementPark;
-                    typeHeader = "Amusement Park Event";
+                    typeHeader = "Amusement Park";
                     break;
                 case 2:
                     newEvent = EventType.Bowling;
-                    typeHeader = "Bowling Event";
+                    typeHeader = "Bowling";
                     break;
                 case 3:
                     newEvent = EventType.Concert;
-                    typeHeader = "Concert Event";
+                    typeHeader = "Concert";
                     break;
                 case 4:
                     newEvent = EventType.Golf;
-                    typeHeader = "Golf Event";
+                    typeHeader = "Golf";
                     break;
                 default:
                     Console.WriteLine("Invalid Selection");
@@ -141,7 +137,6 @@ namespace Challenge_03
             _outingRepo.AddOuting(newEvent, attendance, date, individualCost, totalEventCost);
             Console.ReadLine();
         }
-
         public void CalculateCosts()
         {
             Console.Clear();

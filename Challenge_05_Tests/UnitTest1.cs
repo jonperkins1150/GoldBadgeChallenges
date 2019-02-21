@@ -5,32 +5,49 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Challenge_05_Tests
 {
-
     [TestClass]
     public class UnitTest1
     {
-        CustomerRepository _customerRepo = new CustomerRepository();
-        public List<Customer> customerList = new List<Customer>();
+        CustomerRepository _customerRepoTest = new CustomerRepository();
+        List<Customer> _customerList = new List<Customer>();
 
         [TestMethod]
-        public void ClaimsRepository_GetClaims_ShouldReturnCorrectCount()
+        public void ClaimsRepository_AddCustomer_ShouldReturnCorrectCount()
         {
-            CustomerRepository _customerRepoTest = new CustomerRepository();
             //Arrange
-
-            List<Customer> customerTest = new List<Customer>();
-            //_customerRepoTest.AddCustomer(Customer);
-            //List<customer> menuList = _customerRepoTest.GetList();
-
+            _customerRepoTest.AddCustomer("James", "Walker", 1);
+            List<Customer> _customerList = _customerRepoTest.GetList();
             //Act           
-            //var actual = menuList.Count;
+            var actual = _customerList.Count;
             var expected = 1;
-
             //Assert
-            //Assert.AreEqual(expected, actual);
-            //_claimsrepo.AddClaim(ClaimType.Home, "Robbery", 1500.25m, DateTime.Now, DateTime.Now);
-
-
+            Assert.AreEqual(actual, expected);
+        }     
+        [TestMethod]
+        public void CustomerRepository_Recount_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            _customerRepoTest.AddCustomer("James", "Walker", 1);
+            List<Customer> _customerList = _customerRepoTest.GetList();
+            //Act           
+            var actual = _customerList.Count;
+            var expected = 1;
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CustomerRepository_RemoveItemFromList_ShouldReturnCorrectCount()
+        {
+            //Arrange
+            _customerRepoTest.AddCustomer("James", "Walker", 1);
+            _customerRepoTest.AddCustomer("Jon", "Perkins", 1);
+            _customerRepoTest.RemoveCustomer(1);
+            List<Customer> _customerList = _customerRepoTest.GetList();
+            //Act           
+            var actual = _customerList.Count;
+            var expected = 1;
+            //Assert
+            Assert.AreEqual(expected, actual);
         }
     }
 }
